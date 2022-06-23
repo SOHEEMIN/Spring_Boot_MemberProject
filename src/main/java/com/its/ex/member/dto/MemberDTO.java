@@ -34,4 +34,5 @@ public class MemberDTO {
         memberDTO.setMemberPhone(memberEntity.getMemberPhone());
         return memberDTO;
     }
+
 }

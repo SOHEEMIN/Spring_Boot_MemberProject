@@ -10,4 +10,5 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     // 리턴타입 : MemberEntity / 매개변수: memberEmail(String)
     // 추상메서드: 메서드의 형태만 정의할 뿐, 실행블록을 가질 수 없다.
     Optional<MemberEntity> findByMemberEmail(String memberEmail);
+
 }

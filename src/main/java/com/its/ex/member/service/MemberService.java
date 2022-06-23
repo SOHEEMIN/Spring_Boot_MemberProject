@@ -60,4 +60,13 @@ public class MemberService {
         }
         return findList;
     }
+    public void deleteById(Long id) {
+        memberRepository.deleteById(id);
+        return;
+    }
+    public Long update(MemberDTO memberDTO) {
+        MemberEntity memberEntity = MemberEntity.toEntity(memberDTO);
+        Long id = memberRepository.save(memberEntity).getId();
+        return id;
+    }
 }

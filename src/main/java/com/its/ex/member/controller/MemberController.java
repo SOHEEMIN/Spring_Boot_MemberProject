@@ -40,7 +40,7 @@ public class MemberController {
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
             session.setAttribute("id", loginResult.getId());
-            return "index";
+            return "memberPages/myPage";
         } else {
             return "memberPages/login";
         }
@@ -83,17 +83,26 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK); //ajax 호출한 부분에 리턴으로 200 응답을 줌. (데이터+바디)
     }
 
-    @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable Long id, Model model) {
+    //수정화면 요청
+    @GetMapping("/update")
+    public String updateForm(HttpSession session, Model model) {
+        Long id = (Long) session.getAttribute("id"); //회원가입 시 부여받은 id
         MemberDTO memberDTO = memberService.findById(id);
-        model.addAttribute("member", memberDTO);
+        model.addAttribute("updateMember", memberDTO);
         return "memberPages/update";
     }
+    //수정처리
     @PostMapping("/update")
     public String update(@ModelAttribute MemberDTO memberDTO) {
         memberService.update(memberDTO);
-        return "redirect:/member/";
+        return "redirect:/member/"+memberDTO.getId(); //해당페이지의 상세페이지로 redirect
     }
-//    @PutMapping("/update")
+    //수정처리(put요청)
+    //제이슨으로 오는건 리퀘스트바디로 처리 MemberDTO의 기본생성자만 존재한다면 메시지 컨버터가 객체를 옮겨담아줌.
+    @PutMapping("/{id}")
+    public ResponseEntity updateByAjax(@RequestBody MemberDTO memberDTO){
+        memberService.update(memberDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
